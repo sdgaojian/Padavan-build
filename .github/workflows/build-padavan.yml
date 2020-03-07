@@ -39,6 +39,9 @@ jobs:
         wget https://github.com/hanwckf/padavan-toolchain/releases/download/v1.0/mipsel-linux-uclibc.tar.xz
         tar -xvf mipsel-linux-uclibc.tar.xz -C toolchain-3.4.x
         mkdir -p /opt/images/
+    - name: SSH connection to Actions
+      uses: P3TERX/debugger-action@master
+      if: env.SSH_ACTIONS == 'true'
     - name: Build Firmware
       env:
         TNAME: MI-MINI
@@ -95,9 +98,7 @@ jobs:
         sudo ./clear_tree
         sudo ./build_firmware_bkye $TNAME
         sudo mv -f images/*.trx /opt/images/
-    - name: SSH connection to Actions
-      uses: P3TERX/debugger-action@master
-      if: env.SSH_ACTIONS == 'true'
+
     - name : Upload packages
       uses: actions/upload-artifact@master
       if: always()
